@@ -12,7 +12,7 @@ import hashlib
 import csv
 from prometheus_client import start_http_server, Summary, Counter, Gauge, REGISTRY
 
-# Vérifier si la métrique est déjà enregistrée pour éviter la duplication
+# Check if the metric is already registered to avoid duplication
 def get_or_create_metric(metric_type, name, documentation, labelnames=(), namespace='', subsystem='', unit=''):
     if name not in REGISTRY._names_to_collectors:
         if metric_type == 'Summary':
@@ -23,7 +23,7 @@ def get_or_create_metric(metric_type, name, documentation, labelnames=(), namesp
             return Gauge(name, documentation)
     return REGISTRY._names_to_collectors[name]
 
-# Initialisation des métriques Prometheus
+#  Prometheus metrics initialization
 TRANSACTION_TIME = get_or_create_metric('Summary', 'transaction_processing_seconds', 'Time spent processing a transaction')
 DOUBLE_SPENDING_TIME = get_or_create_metric('Summary', 'double_spending_detection_seconds', 'Time spent detecting double spending')
 TRANSACTIONS = get_or_create_metric('Counter', 'transactions_total', 'Total number of transactions')
@@ -39,7 +39,7 @@ class EnergyModel:
     def estimate_energy(self, num_packets, processing_time):
         return self.base_power * processing_time + self.power_per_packet * num_packets
 
-# Définition des classes UTXO et Transaction
+#  UTXO and Transaction classes definition
 class UTXO:
    def __init__(self, amount, owner_public_key, serial_number=None, is_spent=False):
         self.amount = amount
@@ -199,7 +199,7 @@ def save_results(results, filename):
 
 if __name__ == '__main__':
     setLogLevel('info')
-    start_http_server(8000)  # Démarrer le serveur HTTP pour exposer les métriques Prometheus
+    start_http_server(8000)  # Start the HTTP server to expose Prometheus metrics
     results = []
 
     num_nodes = 30
